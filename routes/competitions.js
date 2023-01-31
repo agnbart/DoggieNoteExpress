@@ -7,14 +7,13 @@ const {
     updateCompetition
 } = require('../controllers/competitionsController');
 
-const competitionRouter = express.Router();
+const competitionsRouter = express.Router();
 
-competitionRouter
-    .get('/', async (req, res) => {
+competitionsRouter
+.get('/', async (req, res) => {
         const competitions = await getCompetitions();
         res.send(competitions);
     })
-
     .get('/:id', async (req, res) => {
         const id = req.params.id;
         const competition = await getCompetition(id);
@@ -41,5 +40,5 @@ competitionRouter
     })
 
 module.exports = {
-    competitionRouter,
+    competitionsRouter,
 }

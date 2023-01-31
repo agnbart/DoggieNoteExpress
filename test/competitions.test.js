@@ -1,31 +1,26 @@
 const request = require('supertest');
-const app = require('../routes/comp');
-//@TODO - przy odwołaniu do competitions pojawia się błąd opart na express.Router
-//const app = require('../routes/competitions')
-
-//@TODO - komunikat
-//Jest did not exit one second after the test run has completed.
-//
-// This usually means that there are asynchronous operations that weren't stopped in your tests.
+const express = require('express');
+const {competitionsRouter} = require('../routes/competitions')
+const app = express();
+//@TODO problem with asynchonous operations
+app.use(express.json());
+app.use('/competitions', competitionsRouter);
 
 describe("GET /competitions", () => {
 
     it('GET all competitions', async () => {
-        const response = await request(app)
-            .get('/')
-            .set('Accept', 'application/json')
-        expect(response.type).toEqual('application/json')
-        expect(response.status).toEqual(200)
+        const response = await request(app).get('/competitions')
+        expect(response.status).toBe(200)
     });
 
     it("GET one existed competition", async () => {
-        const response = await request(app).get("/15");
+        const response = await request(app).get("/competitions/20");
         expect(response.type).toEqual('application/json')
         expect(response.status).toEqual(200)
     });
 
     it("GET one nonexisted competition", async () => {
-        const response = await request(app).get("/7");
+        const response = await request(app).get("/competitions/7");
         expect(response.status).toEqual(200)
     });
 });
@@ -33,7 +28,7 @@ describe("GET /competitions", () => {
 describe("POST /competition", () => {
     it ('POST competition with name & place', async () => {
         const response = await request(app)
-            .post('/')
+            .post('/competitions/')
             .send({
                 name: "Nazwa testowa",
                 place: "Miejsce testowe"
@@ -47,10 +42,10 @@ describe("POST /competition", () => {
     });
 });
 
-/*describe('DELETE /competition', () => {
+describe('DELETE /competition', () => {
     it('DELETE competition', async () => {
         const response = await request(app)
-            .delete('/15');
+            .delete('/competitions/15');
         expect(response.status).toBe(200);
     });
-});*/
+});

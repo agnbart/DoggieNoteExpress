@@ -1,11 +1,11 @@
 const express = require('express');
-const {competitionRouter} = require("./routes/competitions");
+const {competitionsRouter} = require("./routes/competitions");
 
 require('dotenv').config();
 const app = express();
 
 app.use(express.json());
-app.use('/competitions', competitionRouter);
+app.use('/competitions', competitionsRouter);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
